@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  fb:
+    image: harbor.chlin.tk/python/fb:${TAG}
+    container_name: fb
+    environment:
+      - TZ=Asia/Taipei
+    volumes:
+      - ~/volumes/fb:/usr/src/app/logs
+      - ~/etc/timezone:/etc/localtime:ro
+    restart: always
+    ports: 
+      - "${PORT}:${PORT}"
+    env_file:
+      - dev.env
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:${PORT}/healthCheck || exit 1"]
+      interval: 600s
+      timeout: 10s
+      start_period: 10s
